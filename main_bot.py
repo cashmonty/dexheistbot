@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
-from commands import chart
+from commands import chart, chartichi
 import commands as my_commands  # Import your commands
 
 # Load environment variables

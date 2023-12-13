@@ -30,7 +30,7 @@ def calculate_ichimoku(df):
 
 num_candles = 100
 
-async def process_ohlc_data_and_generate_chart(ohlc_data):
+async def process_ohlc_data_and_generate_chart_ichi(ohlc_data):
     df = pd.DataFrame(ohlc_data['data'])
     df['date_open'] = pd.to_datetime(df['date_open'])
     df.set_index('date_open', inplace=True)
@@ -49,7 +49,7 @@ async def process_ohlc_data_and_generate_chart(ohlc_data):
     # Filter out outliers based on thresholds
     df_filtered = df[(df['High'] <= upper_threshold) & (df['Low'] >= lower_threshold)]
 
-    # Calculate the Ichimoku Cloud on the filtered data
+   # # Calculate the Ichimoku Cloud on the filtered data
     df_filtered = calculate_ichimoku(df_filtered)
 
     # Slice to get the last 'num_candles' candles from the filtered data
@@ -97,3 +97,31 @@ async def process_ohlc_data_and_generate_chart(ohlc_data):
     )
 
     return 'chart.png'
+
+async def process_ohlc_data_and_generate_chart(ohlc_data):
+    df = pd.DataFrame(ohlc_data['data'])
+    df['date_open'] = pd.to_datetime(df['date_open'])
+    df.set_index('date_open', inplace=True)
+    df.rename(columns={
+        'price_open': 'Open',
+        'price_high': 'High',
+        'price_low': 'Low',
+        'price_close': 'Close',
+        'volume_1h_usd': 'Volume'
+    }, inplace=True)
+
+    # Define thresholds for outlier removal
+    upper_threshold = df['Close'].mean() + 3 * df['Close'].std()
+    lower_threshold = df['Close'].mean() - 3 * df['Close'].std()
+
+    # Filter out outliers based on thresholds
+    df_filtered = df[(df['High'] <= upper_threshold) & (df['Low'] >= lower_threshold)]
+
+   # # Calculate the Ichimoku Cloud on the filtered data
+
+    # Slice to get the last 'num_candles' candles from the filtered data
+    df_last_candles = df_filtered[-num_candles:]
+    mpf.plot(df_last_candles,type='candle',mav=(13,25), savefig="chart.png")
+    return 'chart.png'
+
+    
