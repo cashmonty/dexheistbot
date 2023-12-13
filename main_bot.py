@@ -18,6 +18,7 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 
 
 bot.add_command(chart)
+bot.add_command(chartichi)
 
 @bot.event
 async def on_ready():
