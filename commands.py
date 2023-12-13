@@ -14,7 +14,7 @@ async def chart(ctx, token_address: str, interval: str = '1h'):
         await ctx.send("Failed to fetch OHLC data.")
 
 @commands.command(name='chartichi', help='Generate a chart for given token and interval')
-async def chart(ctx, token_address: str, interval: str = '1h'):
+async def chartichi(ctx, token_address: str, interval: str = '1h'):
     ohlc_data = await get_ohlc_data(token_address, interval)
     if ohlc_data is not None:
         chart_file = await process_ohlc_data_and_generate_chart_ichi(ohlc_data)
